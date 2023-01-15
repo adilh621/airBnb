@@ -8,6 +8,7 @@ import { DateRangePicker } from 'react-date-range';
 import { useRouter } from "next/router";
 
 function Header({placeholder}){
+    
     const [searchInput, setSearchInput] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -18,11 +19,12 @@ function Header({placeholder}){
         endDate: endDate,
         key: "selection"
     }
+
     const handleSelect = (ranges)=> {
-        // console.log(ranges)
         setStartDate(ranges.selection.startDate)
         setEndDate(ranges.selection.endDate)
     }
+
     const resetInput = () => {
         setSearchInput("")
     }
@@ -59,7 +61,7 @@ function Header({placeholder}){
                     onChange={(e)=>setSearchInput(e.target.value)}
                     className="flex-grow pl-5 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
                     type="text"
-                    placeholder={placeholder}/>
+                    placeholder={placeholder ? placeholder : "Start Your Search"}/>
                     
                 <SearchIcon className="hidden md:inline-flex h-8 bg-red-400 rounded-full p-2 cursor-pointer mx-auto md:mx-2"/>
             </div>
