@@ -1,7 +1,7 @@
 import ReactMapGL,{Marker,Popup} from 'react-map-gl';
 import { useState } from 'react';
-// import { getCenter } from 'geolib/es/getCenter';
 const geolib = require('geolib');
+import "mapbox-gl/dist/mapbox-gl.css";
 
 
 function Map({searchResults}){
@@ -16,23 +16,18 @@ function Map({searchResults}){
     const [viewport, setViewport] = useState({
         width:'100%',
         height:'100%',
-        latitude: center.latitude,
+        latitude: (center.latitude - .15),
         longitude: center.longitude,
         zoom:11
     })
+    const [selectedLocation, setSelectedLocation] = useState({})
 
     
     return <ReactMapGL
         mapStyle='mapbox://styles/adilh621/clcxsxqww000814qme8msvhta'
-        // mapboxApiAccessToken={process.env.mapbox_key}
         mapboxAccessToken={process.env.mapbox_key}
         {...viewport}
-        // onViewportChange={(nextViewport)=>{
-        //     console.log(nextViewport)
-        //     setViewport(nextViewport)
-        // }}
         onMove={(nextViewport)=>{
-            // console.log(nextViewport.viewState)
             setViewport(nextViewport.viewState)
             
         }}
@@ -45,9 +40,20 @@ function Map({searchResults}){
                 offsetLeft={-20}
                 offsetTop={-10}
                 >
-                    <p className='cursor-pointer text-xl animate-bounce'
-                    >📌</p>
+                    <p 
+                    onClick={()=>{setSelectedLocation(result)}}
+                    className='cursor-pointer text-xl animate-bounce' 
+                    aria-label='push-pin' 
+                    role='img'>
+                        📌
+                    </p>
                 </Marker>
+
+                {selectedLocation.long === result.long ? (
+
+                    <Popup onClose={()=>{setSelectedLocation({})}} closeOnClick={true} latitude={result.lat} longitude={result.long}>{result.title}</Popup>
+
+                ) : (false)}
             </div>
         ))}
 
